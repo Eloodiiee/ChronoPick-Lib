@@ -1,0 +1,167 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 1);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a2e; /* Fond sombre */
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+}
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+a:hover {
+    color: #535bf2;
+}
+
+.navbar {
+    background-color: #3e206d; /* Violet foncé */
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 0 6px #3e206d, 0 0 6px #3e206d, 0 0 6px #3e206d, 0 0 6px #8956ff, 0 0 6px #8956ff, 0 0 6px #8956ff, 0 0 6px #8956ff;
+    border-bottom: 2px solid #8956ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.navbar .logo {
+    height: 50px; /* Ajuste la taille */
+}
+.navbar h1 {
+    margin: 0;
+    margin-top: 10px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1.1;
+}
+.logo-container {
+    width: 40px;
+    height: 40px;
+}
+section {
+    margin-top: 5rem;
+}
+.description {
+    width: 65%;
+    margin-inline: auto;
+}
+.description ul {
+    list-style: decimal;
+    text-align: left;
+}
+.content {
+    margin-top: 35px;
+    padding: 20px;
+}
+
+.appContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    text-align: center;
+    width: 85%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #272038;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1); /* Ombres plus légères */
+}
+
+.appContainer h2 {
+    margin: 0;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Légère ombre portée pour plus de contraste */
+}
+
+.datePickerContainer {
+    grid-column: 1;
+    grid-row: 2;
+    background: linear-gradient(145deg, #2e1a43, #3b2c4b); /* Dégradé subtil */
+    padding: 20px;
+    border-radius: 12px; /* Bords arrondis pour adoucir */
+    display: grid;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Ombre plus légère */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.codeContainer {
+    background: #282c34;
+
+    grid-column: 1 / span 2;
+    border-radius: 12px; /* Bords arrondis pour adoucir */
+    display: none;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Ombre plus légère */
+}
+.codeContainerHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    background: #38414e;
+    border-radius: 12px 12px 0px 0px;
+}
+.codeContainerChild {
+    margin-inline: 5px;
+}
+.codeContainerHeader button {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.codeContainerHeader button span {
+    margin-right: 5px;
+}
+.open {
+    display: grid;
+}
+.datePickerContainer:hover {
+    transform: translateY(-2px); /* Légère levée au survol */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Ombre subtile lors du survol */
+}
+
+.textContainer {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 14px;
+    font-weight: 300; /* Police plus fine pour un effet moderne */
+    text-align: left;
+}
+.showCodeBtn {
+    grid-column: 2;
+    grid-row: 3;
+    margin: 0;
+    text-align: right;
+    text-decoration: underline;
+    color: #958fee;
+    cursor: pointer;
+}
