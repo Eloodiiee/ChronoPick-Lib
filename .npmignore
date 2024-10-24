@@ -1,0 +1,26 @@
+# Exclude the node_modules folder, it's not needed in the npm package
+node_modules/
+
+# Exclude source files used only for development or testing
+src/
+public/
+
+# Exclude config files that are only relevant for development
+.vscode/
+eslint.config.js
+vite.config.js
+tsconfig.json
+package-lock.json
+
+# Exclude git-related files
+.git/
+.gitignore
+
+# Exclude local environment files
+.env
+.env.local
+
+# Exclude build tools and unnecessary files
+build/
+dist/vite.svg
+dist/*.map

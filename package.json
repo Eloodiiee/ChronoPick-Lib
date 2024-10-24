@@ -1,31 +1,50 @@
 {
-  "name": "datepicker-lib",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-syntax-highlighter": "^15.6.1"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@types/react": "^18.3.10",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.2",
-    "eslint": "^9.11.1",
-    "eslint-plugin-react": "^7.37.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.12",
-    "globals": "^15.9.0",
-    "vite": "^5.4.8"
-  }
+    "name": "chronopick",
+    "private": false,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint .",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@fortawesome/free-solid-svg-icons": "^6.6.0",
+        "@fortawesome/react-fontawesome": "^0.2.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-syntax-highlighter": "^15.6.1"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.11.1",
+        "@types/react": "^18.3.10",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^4.3.2",
+        "eslint": "^9.11.1",
+        "eslint-plugin-react": "^7.37.0",
+        "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+        "eslint-plugin-react-refresh": "^0.4.12",
+        "globals": "^15.9.0",
+        "vite": "^5.4.8"
+    },
+    "description": "`ChronoPick` is a **React Date Picker** component that offers advanced features such as excluding specific dates, customizable date formats, and intuitive navigation using dropdowns and arrows.",
+    "main": "dist/datepicker.umd.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Eloodiiee/ChronoPick-lib.git"
+    },
+    "keywords": [
+        "datepicker",
+        "react",
+        "calendar",
+        "component",
+        "custom-date-picker"
+    ],
+    "author": "Eloodiiee",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Eloodiiee/ChronoPick-lib/issues"
+    },
+    "homepage": "https://github.com/Eloodiiee/ChronoPick-lib#readme"
 }
