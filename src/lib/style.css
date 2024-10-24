@@ -1,8 +1,9 @@
-/* DatePicker.css */
+/* DatePicker */
 .date-picker-button {
     padding: 10px 20px;
     border: 1px solid #ccc;
     display: inline-block;
+    box-sizing: content-box;
     cursor: pointer;
     border-radius: 4px;
     background-color: #f5f5f5;
@@ -73,7 +74,7 @@ li.disabled {
     font-size: 14px;
 }
 
-.dropdown {
+.dropdown-datepicker {
     position: relative;
     display: inline-block;
 }

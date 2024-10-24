@@ -15,7 +15,7 @@
 To install `ChronoPick` in your project, run:
 
 ```bash
-npm install chronopick-datepicker
+npm install chronopick
 ```
 
 ## Usage
@@ -23,8 +23,8 @@ npm install chronopick-datepicker
 To use `ChronoPick` in your React project:
 
 ```jsx
-import DatePicker from "chronopick-datepicker"
-import "chronopick-datepicker/dist/DatePicker.css"
+import DatePicker from "chronopick"
+import "chronopick/dist/style.css"
 
 const App = () => {
     const handleDateChange = (newDate) => {

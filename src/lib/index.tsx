@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
-import "./DatePicker.css"
+import "./style.css"
 
 // Interface définissant les propriétés (props) attendues par le composant DatePicker
 export interface DatePickerProps {
@@ -88,6 +88,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     // Gère la validation de la date saisie lors de l'appui sur la touche "Entrée"
     const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
+            e.preventDefault() // Empêche la soumission du formulaire par Enter
             const parsedDate = parseDateFromString(inputDate, dateFormat)
             console.log("Date après parsing :", parsedDate) // Ajout du log
 
@@ -347,7 +348,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                             <button onClick={handlePreviousMonth}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            <div className="dropdown">
+                            <div className="dropdown-datepicker ">
                                 <div className="dropdown-button" ref={monthDropdownRef} onClick={() => setShowMonthDropdown(!showMonthDropdown)}>
                                     {["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"][currentMonth]}
                                 </div>
@@ -376,7 +377,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                             <button onClick={handlePreviousYear}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            <div className="dropdown">
+                            <div className="dropdown-datepicker">
                                 <div className="dropdown-button" ref={yearDropdownRef} onClick={() => setShowYearDropdown(!showYearDropdown)}>
                                     {currentYear}
                                 </div>
