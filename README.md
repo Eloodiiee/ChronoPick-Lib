@@ -1,6 +1,6 @@
 # ChronoPick - Custom Date Picker
 
-ChronoPick is a **React Date Picker** component that offers advanced features such as excluding specific dates, customizable date formats, and intuitive navigation using dropdowns and arrows.
+`ChronoPick` is a **React Date Picker** component that offers advanced features such as excluding specific dates, customizable date formats, and intuitive navigation using dropdowns and arrows.
 
 ## Features
 
@@ -12,7 +12,7 @@ ChronoPick is a **React Date Picker** component that offers advanced features su
 
 ## Installation
 
-To install ChronoPick in your project, run:
+To install `ChronoPick` in your project, run:
 
 ```bash
 npm install chronopick-datepicker
@@ -20,7 +20,7 @@ npm install chronopick-datepicker
 
 ## Usage
 
-To use ChronoPick in your React project:
+To use `ChronoPick` in your React project:
 
 ```jsx
 import DatePicker from "chronopick-datepicker"
@@ -93,12 +93,12 @@ To prevent selecting dates in the future, you can set the `disableFuture` prop t
 
 **1. Can I use ChronoPick with TypeScript?**
 
-Yes, ChronoPick is fully compatible with TypeScript. The `DatePickerProps` interface allows you to type-check the props passed to the component.
+Yes, `ChronoPick` is fully compatible with TypeScript. The `DatePickerProps` interface allows you to type-check the props passed to the component.
 
 **2. Does ChronoPick support mobile browsers?**
 
-Yes, ChronoPick is designed to be responsive and works across desktop and mobile browsers.
+Yes, `ChronoPick` is designed to be responsive and works across desktop and mobile browsers.
 
-License
+## License
 
 `ChronoPick` is distributed under the MIT License. This license permits use, modification, and free distribution, provided that the MIT License text is included with any substantial distribution of the software. For more information, please refer to the LICENSE file included with this distribution or visit [MIT License](https://opensource.org/license/MIT).
