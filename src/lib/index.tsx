@@ -103,6 +103,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
             }
         }
     }
+    const handleInputBlur = () => {
+        const parsedDate = parseDateFromString(inputDate, dateFormat)
+        console.log("Date après blur :", parsedDate) // Log de la date au moment de l'événement "blur"
+
+        if (parsedDate && (!disableFuture || parsedDate <= today)) {
+            setCurrentDate(parsedDate)
+            setCurrentMonth(parsedDate.getMonth())
+            setCurrentYear(parsedDate.getFullYear())
+            setShowCalendar(false) // Ferme le calendrier après validation
+            if (onDateChange) {
+                onDateChange(parsedDate)
+            }
+        }
+    }
 
     // Fonction pour transformer une chaîne de caractères en date selon le format spécifié
     const parseDateFromString = (dateString: string, format: string = "dd/mm/yyyy"): Date | null => {
@@ -405,6 +419,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                             placeholder={dateFormat.toUpperCase()} // Placeholde modifié en fonction du format
                             value={inputDate}
                             onChange={handleInputChange}
+                            onBlur={handleInputBlur} // Ajouter l'événement "blur"
                             onKeyUp={handleInputKeyPress} // Valide la date en appuyant sur Entrée
                             style={{ padding: "8px", fontSize: "14px", width: "150px" }}
                             maxLength={dateFormat.length + 2} // Longueur maximale en fonction du format (avec 2 séparateurs "/")
