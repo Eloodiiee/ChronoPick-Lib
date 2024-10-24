@@ -3,61 +3,94 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import "./DatePicker.css"
 
-// Props pour le composant DatePicker, incluant des options comme la date sélectionnée,
-// un callback pour le changement de date, un filtre pour les dates, et une option pour désactiver les dates futures.
+// Interface définissant les propriétés (props) attendues par le composant DatePicker
 export interface DatePickerProps {
-    selectedDate?: Date
-    onDateChange?: (date: Date) => void
-    filterDate?: (date: Date) => boolean
-    disableFuture?: boolean
+    selectedDate?: Date // Date sélectionnée par défaut
+    onDateChange?: (date: Date) => void // Callback pour déclencher un changement de date
+    filterDate?: (date: Date) => boolean // Fonction permettant de filtrer les dates non sélectionnables
+    disableFuture?: boolean // Indique si les dates futures doivent être désactivées
+    dateFormat?: string // Format de date personnalisé (par défaut 'dd/mm/yyyy')
 }
 
-// Composant principal DatePicker
-export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange, filterDate, disableFuture }) => {
-    // État pour stocker la date actuelle, le mois et l'année sélectionnés, ainsi que l'affichage du calendrier et des dropdowns.
-    const [currentDate, setCurrentDate] = useState<Date>(selectedDate || new Date())
-    const [currentMonth, setCurrentMonth] = useState<number>(currentDate.getMonth())
-    const [currentYear, setCurrentYear] = useState<number>(currentDate.getFullYear())
-    const [showCalendar, setShowCalendar] = useState<boolean>(false)
-    const [showMonthDropdown, setShowMonthDropdown] = useState<boolean>(false)
-    const [showYearDropdown, setShowYearDropdown] = useState<boolean>(false)
-    const [inputDate, setInputDate] = useState<string>("") // État pour la date saisie par l'utilisateur
+// Fonction utilitaire pour formater une date selon le format spécifié dans les props
+const formatDate = (date: Date, format: string = "dd/mm/yyyy"): string => {
+    const day = String(date.getDate()).padStart(2, "0") // Formate le jour avec un zéro initial
+    const month = String(date.getMonth() + 1).padStart(2, "0") // Formate le mois avec un zéro initial
+    const year = date.getFullYear()
 
-    const today = new Date() // Stocke la date du jour
+    // Choisit le format correct en fonction de l'option passée via le prop dateFormat
+    switch (format.toLowerCase()) {
+        case "yyyy/mm/dd":
+            return `${year}/${month}/${day}`
+        case "mm/dd/yyyy":
+            return `${month}/${day}/${year}`
+        case "yyyy-dd-mm":
+            return `${year}-${day}-${month}`
+        case "dd/mm/yyyy":
+        default:
+            return `${day}/${month}/${year}` // Format par défaut "dd/mm/yyyy"
+    }
+}
 
-    // Ref pour détecter les clics en dehors du calendrier
+// Composant principal DatePicker, contrôlant l'affichage et l'interaction du calendrier
+export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange, filterDate, disableFuture, dateFormat = "dd/mm/yyyy" }) => {
+    // États gérant la date sélectionnée, mois, année, et l'affichage des éléments du calendrier
+    const [currentDate, setCurrentDate] = useState<Date>(selectedDate || new Date()) // Date actuelle
+    const [currentMonth, setCurrentMonth] = useState<number>(currentDate.getMonth()) // Mois actuel
+    const [currentYear, setCurrentYear] = useState<number>(currentDate.getFullYear()) // Année actuelle
+    const [showCalendar, setShowCalendar] = useState<boolean>(false) // Contrôle la visibilité du calendrier
+    const [showMonthDropdown, setShowMonthDropdown] = useState<boolean>(false) // Contrôle la visibilité du sélecteur de mois
+    const [showYearDropdown, setShowYearDropdown] = useState<boolean>(false) // Contrôle la visibilité du sélecteur d'année
+    const [inputDate, setInputDate] = useState<string>(formatDate(currentDate, dateFormat)) // Date affichée dans le champ input
+
+    const today = new Date() // Date du jour
+
+    // Ref pour détecter les clics en dehors du calendrier et fermer les dropdowns
     const calendarRef = useRef<HTMLDivElement>(null)
+    const monthDropdownRef = useRef<HTMLDivElement>(null)
+    const yearDropdownRef = useRef<HTMLDivElement>(null)
 
-    // Hook useEffect pour fermer le calendrier lorsqu'un clic se produit en dehors de celui-ci
+    // useEffect permettant de gérer les clics en dehors du calendrier pour le fermer
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
-                setShowCalendar(false)
+            // Vérifie si le clic est en dehors du calendrier, ou des dropdowns
+            if (
+                calendarRef.current &&
+                !calendarRef.current.contains(event.target as Node) &&
+                monthDropdownRef.current &&
+                !monthDropdownRef.current.contains(event.target as Node) &&
+                yearDropdownRef.current &&
+                !yearDropdownRef.current.contains(event.target as Node)
+            ) {
+                setShowCalendar(false) // Ferme le calendrier
                 setShowMonthDropdown(false) // Ferme le dropdown du mois
                 setShowYearDropdown(false) // Ferme le dropdown de l'année
             }
         }
 
-        // Ajoute un listener global sur les clics
+        // Ajoute un listener pour détecter les clics à l'extérieur
         document.addEventListener("click", handleClickOutside)
 
         return () => {
+            // Nettoie le listener lors du démontage du composant
             document.removeEventListener("click", handleClickOutside)
         }
-    }, [calendarRef])
+    }, [calendarRef, monthDropdownRef, yearDropdownRef])
 
-    // Gestion du clic sur le champ de date pour afficher/masquer le calendrier
+    // Gère l'affichage/masquage du calendrier lors d'un clic sur le champ de date
     const handleDateClick = (event: React.MouseEvent) => {
-        event.stopPropagation() // Empêche la propagation de l'événement pour éviter la fermeture immédiate
-        setShowCalendar(!showCalendar) // Bascule l'état du calendrier
-        setShowMonthDropdown(false)
-        setShowYearDropdown(false)
+        event.stopPropagation() // Empêche la fermeture immédiate après l'ouverture
+        setShowCalendar(!showCalendar) // Inverse l'état de visibilité du calendrier
+        setShowMonthDropdown(false) // Ferme le dropdown du mois
+        setShowYearDropdown(false) // Ferme le dropdown de l'année
     }
 
-    // Gestion de la touche "Entrée" pour valider la date saisie
+    // Gère la validation de la date saisie lors de l'appui sur la touche "Entrée"
     const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            const parsedDate = parseDateFromString(inputDate)
+            const parsedDate = parseDateFromString(inputDate, dateFormat)
+            console.log("Date après parsing :", parsedDate) // Ajout du log
+
             if (parsedDate && (!disableFuture || parsedDate <= today)) {
                 setCurrentDate(parsedDate)
                 setCurrentMonth(parsedDate.getMonth())
@@ -70,128 +103,202 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
         }
     }
 
-    // Fonction pour formater la date au format "DD/MM/YYYY"
-    const formatDate = (date: Date): string => {
-        const day = String(date.getDate()).padStart(2, "0")
-        const month = String(date.getMonth() + 1).padStart(2, "0") // Les mois commencent à 0, donc on ajoute 1
-        const year = date.getFullYear()
-        return `${day}/${month}/${year}` // Retourne la date au format "DD/MM/YYYY"
-    }
+    // Fonction pour transformer une chaîne de caractères en date selon le format spécifié
+    const parseDateFromString = (dateString: string, format: string = "dd/mm/yyyy"): Date | null => {
+        let day: number, month: number, year: number
 
-    // Fonction pour transformer une chaîne de caractères en date au format "DD/MM/YYYY"
-    const parseDateFromString = (dateString: string): Date | null => {
-        const [day, month, year] = dateString.split("/").map(Number)
+        switch (format.toLowerCase()) {
+            case "yyyy/mm/dd":
+                ;[year, month, day] = dateString.split("/").map(Number)
+                break
+            case "mm/dd/yyyy":
+                ;[month, day, year] = dateString.split("/").map(Number)
+                break
+            case "dd/mm/yyyy":
+            default:
+                ;[day, month, year] = dateString.split("/").map(Number)
+                break
+        }
+
         if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-            return new Date(year, month - 1, day) // Crée une nouvelle date à partir de la chaîne formatée
+            return new Date(year, month - 1, day) // Crée une nouvelle date
         }
         return null // Retourne null si la date est invalide
     }
 
-    // Fonction pour gérer le changement de date (via la sélection dans le calendrier)
+    // Gère le changement de la date sélectionnée dans le calendrier
     const handleDateChange = (newDate: Date) => {
         if (disableFuture && newDate > today) {
-            return // Empêche la sélection de dates futures si l'option est activée
+            return // Si l'option disableFuture est activée, empêche la sélection de dates futures
         }
         setCurrentDate(newDate)
-        setInputDate(formatDate(newDate)) // Met à jour le champ de saisie avec la date au bon format
+        setInputDate(formatDate(newDate, dateFormat)) // Met à jour la date dans le champ input selon le format
         setShowCalendar(false)
         setShowMonthDropdown(false)
         setShowYearDropdown(false)
         if (onDateChange) {
-            onDateChange(newDate)
+            onDateChange(newDate) // Appelle le callback de changement de date
         }
     }
 
     // Gestion du changement de mois via le dropdown
-    const handleMonthChange = (month: number) => {
+    const handleMonthChange = (month: number, event: React.MouseEvent) => {
+        event.stopPropagation() // Empêche la fermeture du calendrier
         if (disableFuture && (currentYear > today.getFullYear() || (currentYear === today.getFullYear() && month > today.getMonth()))) {
             return // Empêche la sélection de mois futurs
         }
+        const updatedDate = new Date(currentYear, month, currentDate.getDate())
         setCurrentMonth(month)
+        setCurrentDate(updatedDate)
+        setInputDate(formatDate(updatedDate, dateFormat)) // Met à jour l'affichage de la date
         setShowMonthDropdown(false) // Ferme le dropdown après sélection
     }
 
     // Gestion du changement d'année via le dropdown
-    const handleYearChange = (year: number) => {
+    const handleYearChange = (year: number, event: React.MouseEvent) => {
+        event.stopPropagation() // Empêche la fermeture du calendrier
         if (disableFuture && year > today.getFullYear()) {
             return // Empêche la sélection d'années futures
         }
+        const updatedDate = new Date(year, currentMonth, currentDate.getDate())
         setCurrentYear(year)
+        setCurrentDate(updatedDate)
+        setInputDate(formatDate(updatedDate, dateFormat)) // Met à jour l'affichage de la date
         setShowYearDropdown(false) // Ferme le dropdown après sélection
     }
 
     // Gestion de la navigation au mois précédent
     const handlePreviousMonth = () => {
-        if (currentMonth === 0) {
-            setCurrentMonth(11)
-            setCurrentYear(currentYear - 1) // Si on est en janvier, on passe à décembre de l'année précédente
-        } else {
-            setCurrentMonth(currentMonth - 1)
+        let newMonth = currentMonth - 1
+        let newYear = currentYear
+
+        if (newMonth < 0) {
+            newMonth = 11
+            newYear -= 1
         }
+
+        const updatedDate = new Date(newYear, newMonth, currentDate.getDate())
+        setCurrentMonth(newMonth)
+        setCurrentYear(newYear)
+        setCurrentDate(updatedDate)
+        setInputDate(formatDate(updatedDate, dateFormat)) // Met à jour l'affichage de la date
     }
 
     // Gestion de la navigation au mois suivant
     const handleNextMonth = () => {
-        if (disableFuture && currentYear === today.getFullYear() && currentMonth >= today.getMonth()) {
-            return // Empêche de passer au mois suivant si la date est dans le futur
+        let newMonth = currentMonth + 1
+        let newYear = currentYear
+
+        if (newMonth > 11) {
+            newMonth = 0
+            newYear += 1
         }
-        if (currentMonth === 11) {
-            setCurrentMonth(0)
-            setCurrentYear(currentYear + 1) // Si on est en décembre, on passe à janvier de l'année suivante
-        } else {
-            setCurrentMonth(currentMonth + 1)
+
+        if (disableFuture && newYear === today.getFullYear() && newMonth > today.getMonth()) {
+            return // Empêche la sélection de mois futurs
         }
+
+        const updatedDate = new Date(newYear, newMonth, currentDate.getDate())
+        setCurrentMonth(newMonth)
+        setCurrentYear(newYear)
+        setCurrentDate(updatedDate)
+        setInputDate(formatDate(updatedDate, dateFormat)) // Met à jour l'affichage de la date
     }
 
-    // Gestion de la navigation à l'année précédente
+    // Fonction pour passer à l'année précédente
     const handlePreviousYear = () => {
+        let newYear = currentYear - 1
+        const updatedDate = new Date(newYear, currentMonth, currentDate.getDate())
         setCurrentYear(currentYear - 1)
+        setCurrentDate(updatedDate)
+        setInputDate(formatDate(updatedDate, dateFormat)) // Met à jour l'affichage de la date
     }
 
-    // Gestion de la navigation à l'année suivante
+    // Fonction pour passer à l'année suivante
     const handleNextYear = () => {
         if (disableFuture && currentYear >= today.getFullYear()) {
             return // Empêche de passer à une année future
         }
+        let newYear = currentYear + 1
+        const updatedDate = new Date(newYear, currentMonth, currentDate.getDate())
         setCurrentYear(currentYear + 1)
+        setCurrentDate(updatedDate)
+        setInputDate(formatDate(updatedDate, dateFormat)) // Met à jour l'affichage de la date
     }
 
     // Gestion de la saisie de la date dans le champ texte avec ajout/suppression automatique des slashes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value
+        let value = e.target.value.replace(/[^0-9]/g, "") // Supprime les caractères non numériques
+        const format = dateFormat.toLowerCase()
 
-        // Gestion de la suppression d'un slash si l'utilisateur supprime un caractère
-        if (value.length < inputDate.length) {
-            if (inputDate.endsWith("/") && value.length === inputDate.length - 1) {
-                value = value.slice(0, -1) // Supprime également le slash
+        // Sauvegarde de la position du curseur pour maintenir le comportement naturel lors de la suppression
+        const inputElement = e.target
+        let cursorPosition = inputElement.selectionStart ?? 0 // Sauvegarde de la position du curseur
+
+        // Gestion de l'ajout des slashes au bon moment en fonction du format
+        let formattedValue = ""
+        let actualCursorPosition = cursorPosition
+
+        // Format dd/mm/yyyy
+        if (format === "dd/mm/yyyy") {
+            if (value.length > 0) {
+                formattedValue += value.slice(0, 2) // Jour
+                if (value.length >= 3) {
+                    formattedValue += "/" + value.slice(2, 4) // Mois
+                    if (cursorPosition >= 3) actualCursorPosition++ // Ajustement du curseur après le premier slash
+                }
+                if (value.length >= 5) {
+                    formattedValue += "/" + value.slice(4, 8) // Année
+                    if (cursorPosition >= 6) actualCursorPosition++ // Ajustement du curseur après le deuxième slash
+                }
             }
         }
 
-        // Supprime les caractères non numériques
-        value = value.replace(/\D/g, "")
+        // Format mm/dd/yyyy
+        else if (format === "mm/dd/yyyy") {
+            if (value.length > 0) {
+                formattedValue += value.slice(0, 2) // Mois
+                if (value.length >= 3) {
+                    formattedValue += "/" + value.slice(2, 4) // Jour
+                    if (cursorPosition >= 3) actualCursorPosition++ // Ajustement du curseur après le premier slash
+                }
+                if (value.length >= 5) {
+                    formattedValue += "/" + value.slice(4, 8) // Année
+                    if (cursorPosition >= 6) actualCursorPosition++ // Ajustement du curseur après le deuxième slash
+                }
+            }
+        }
 
-        // Ajoute les slashes automatiquement après le jour et le mois
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + "/" + value.slice(2)
-        }
-        if (value.length >= 5) {
-            value = value.slice(0, 5) + "/" + value.slice(5)
-        }
-        if (value.length > 10) {
-            value = value.slice(0, 10) // Limite la longueur à 10 caractères maximum
+        // Format yyyy/mm/dd
+        else if (format === "yyyy/mm/dd") {
+            if (value.length > 0) {
+                formattedValue += value.slice(0, 4) // Année
+                if (value.length >= 5) {
+                    formattedValue += "/" + value.slice(4, 6) // Mois
+                    if (cursorPosition >= 5) actualCursorPosition++ // Ajustement du curseur après le premier slash
+                }
+                if (value.length >= 7) {
+                    formattedValue += "/" + value.slice(6, 8) // Jour
+                    if (cursorPosition >= 8) actualCursorPosition++ // Ajustement du curseur après le deuxième slash
+                }
+            }
         }
 
-        setInputDate(value)
+        // Mise à jour de l'état avec la nouvelle valeur formatée
+        setInputDate(formattedValue)
+
+        // Restaurer la position du curseur après la mise à jour
+        setTimeout(() => {
+            inputElement.setSelectionRange(actualCursorPosition, actualCursorPosition) // Restaurer la position exacte du curseur
+        }, 0)
 
         // Si la date est complète, on la parse et on la met à jour
-        if (value.length === 10) {
-            const parsedDate = parseDateFromString(value)
-            if (parsedDate && (!disableFuture || parsedDate <= today)) {
+        if (formattedValue.length === format.length) {
+            const parsedDate = parseDateFromString(formattedValue, dateFormat)
+            if (parsedDate && (!disableFuture || parsedDate <= new Date())) {
                 setCurrentDate(parsedDate)
-                setCurrentMonth(parsedDate.getMonth())
-                setCurrentYear(parsedDate.getFullYear())
                 if (onDateChange) {
-                    onDateChange(parsedDate)
+                    onDateChange(parsedDate) // Déclenche l'événement de changement de date
                 }
             }
         }
@@ -203,7 +310,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
         const daysInMonth = new Date(year, month + 1, 0).getDate() // Nombre de jours dans le mois
         const calendar: Array<Date | null> = []
 
-        // Ajoute des jours "vides" pour aligner le premier jour correctement
+        // Ajoute des jours "vides" pour aligner correctement les jours du mois dans le calendrier
         for (let i = 0; i < firstDay; i++) {
             calendar.push(null) // Placeholders pour les jours avant le 1er du mois
         }
@@ -219,7 +326,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     // Génération du calendrier pour le mois et l'année actuels
     const days = generateCalendar(currentYear, currentMonth)
 
-    // Désactive les flèches si les dates futures sont désactivées
+    // Désactive les flèches de navigation si les dates futures sont désactivées
     const isNextMonthDisabled = disableFuture && currentYear === today.getFullYear() && currentMonth >= today.getMonth()
     const isNextYearDisabled = disableFuture && currentYear >= today.getFullYear()
 
@@ -227,21 +334,21 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
         <div style={{ display: "inline-block", fontFamily: "Arial, sans-serif", fontSize: "12px" }}>
             {/* Bouton pour afficher/masquer le calendrier */}
             <div onClick={handleDateClick} className="date-picker-button">
-                <span>{formatDate(currentDate)}</span> {/* Affichage de la date formatée */}
+                <span>{formatDate(currentDate, dateFormat)}</span> {/* Affichage formaté de la date */}
                 <FontAwesomeIcon icon={faCalendar} className="date-picker-icon" />
             </div>
 
-            {/* Affichage du calendrier uniquement si l'état showCalendar est vrai */}
+            {/* Affichage du calendrier uniquement si showCalendar est vrai */}
             {showCalendar && (
                 <div ref={calendarRef} className="date-picker-calendar">
                     <div className="date-picker-controls">
-                        {/* Navigation mois */}
+                        {/* Navigation des mois */}
                         <div className="date-picker-navigation">
                             <button onClick={handlePreviousMonth}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
                             <div className="dropdown">
-                                <div className="dropdown-button" onClick={() => setShowMonthDropdown(!showMonthDropdown)}>
+                                <div className="dropdown-button" ref={monthDropdownRef} onClick={() => setShowMonthDropdown(!showMonthDropdown)}>
                                     {["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"][currentMonth]}
                                 </div>
                                 {/* Dropdown pour les mois */}
@@ -250,7 +357,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                                         {["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"].map((month, index) => (
                                             <li
                                                 key={index}
-                                                onClick={() => handleMonthChange(index)}
+                                                onClick={(event) => handleMonthChange(index, event)}
                                                 className={disableFuture && currentYear === today.getFullYear() && index > today.getMonth() ? "disabled" : ""}
                                             >
                                                 {month}
@@ -264,20 +371,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                             </button>
                         </div>
 
-                        {/* Navigation année */}
+                        {/* Navigation des années */}
                         <div className="date-picker-navigation">
                             <button onClick={handlePreviousYear}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
                             <div className="dropdown">
-                                <div className="dropdown-button" onClick={() => setShowYearDropdown(!showYearDropdown)}>
+                                <div className="dropdown-button" ref={yearDropdownRef} onClick={() => setShowYearDropdown(!showYearDropdown)}>
                                     {currentYear}
                                 </div>
                                 {/* Dropdown pour les années */}
                                 {showYearDropdown && (
                                     <ul className="dropdown-menu dropdown-menu-scrollable">
                                         {Array.from({ length: 100 }, (_, i) => currentYear - 50 + i).map((year) => (
-                                            <li key={year} onClick={() => handleYearChange(year)} className={disableFuture && year > today.getFullYear() ? "disabled" : ""}>
+                                            <li key={year} onClick={(event) => handleYearChange(year, event)} className={disableFuture && year > today.getFullYear() ? "disabled" : ""}>
                                                 {year}
                                             </li>
                                         ))}
@@ -294,12 +401,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                     <div style={{ marginTop: "10px", textAlign: "center" }}>
                         <input
                             type="text"
-                            placeholder="DD/MM/YYYY"
+                            placeholder={dateFormat.toUpperCase()} // Placeholde modifié en fonction du format
                             value={inputDate}
                             onChange={handleInputChange}
                             onKeyUp={handleInputKeyPress} // Valide la date en appuyant sur Entrée
                             style={{ padding: "8px", fontSize: "14px", width: "150px" }}
-                            maxLength={10} // Limite à 10 caractères pour correspondre au format "DD/MM/YYYY"
+                            maxLength={dateFormat.length + 2} // Longueur maximale en fonction du format (avec 2 séparateurs "/")
                         />
                     </div>
 
@@ -326,4 +433,4 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     )
 }
 
-export default DatePicker /*  */
+export default DatePicker

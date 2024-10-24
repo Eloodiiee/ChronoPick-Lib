@@ -1,42 +1,43 @@
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    line-height: 1.7; /* Légèrement augmenté pour améliorer la lisibilité */
     font-weight: 400;
-
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 1);
-
+    color: rgba(255, 255, 255, 0.9); /* Une couleur un peu moins intense pour le texte */
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a2e;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+}
+
 #root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
 }
-body {
-    font-family: "Montserrat", sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #1a1a2e; /* Fond sombre */
-    display: flex;
-    place-items: center;
-    min-width: 320px;
-}
+
 a {
-    font-weight: 500;
-    color: #646cff;
+    font-weight: 600; /* Épaisseur augmentée pour plus de visibilité */
+    color: #a17cf3; /* Violet clair pour une meilleure lisibilité */
     text-decoration: inherit;
 }
+
 a:hover {
-    color: #535bf2;
+    color: #d1bdf5; /* Couleur plus douce au survol */
 }
 
 .navbar {
-    background-color: #3e206d; /* Violet foncé */
+    background-color: #3e206d;
     padding: 15px;
     text-align: center;
     position: fixed;
@@ -44,40 +45,98 @@ a:hover {
     top: 0;
     left: 0;
     z-index: 1000;
-    box-shadow: 0 0 6px #3e206d, 0 0 6px #3e206d, 0 0 6px #3e206d, 0 0 6px #8956ff, 0 0 6px #8956ff, 0 0 6px #8956ff, 0 0 6px #8956ff;
+    box-shadow: 0 0 6px #3e206d, 0 0 6px #3e206d, 0 0 6px #3e206d, 0 0 6px #8956ff;
     border-bottom: 2px solid #8956ff;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
 }
+
 .navbar .logo {
-    height: 50px; /* Ajuste la taille */
+    height: 50px;
 }
+
 .navbar h1 {
     margin: 0;
     margin-top: 10px;
-    font-size: 1.7rem;
-    font-weight: 600;
-    line-height: 1.1;
+    font-size: 1.9rem; /* Augmenté pour donner plus de visibilité au titre */
+    font-weight: 700; /* Renforcé pour attirer l'attention */
+    color: #f0e1ff; /* Une couleur plus claire pour plus de contraste */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Ombre pour un effet de profondeur */
 }
-.logo-container {
-    width: 40px;
-    height: 40px;
-}
+
 section {
-    margin-top: 5rem;
+    margin-top: 6rem; /* Augmenté pour mieux espacer le contenu */
+}
+
+.title {
+    color: #d1bdf5; /* Violet clair mais doux pour correspondre au reste */
+    font-size: 2rem; /* Augmenter légèrement la taille de la police */
+    text-align: center; /* Centrer le titre */
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5); /* Légère ombre portée pour plus de contraste */
+    margin-bottom: 20px; /* Ajouter un espacement suffisant sous le titre */
+    letter-spacing: 1px; /* Ajouter un léger espacement entre les lettres pour aérer le titre */
 }
 .description {
-    width: 65%;
-    margin-inline: auto;
+    background-color: #272038; /* Fond sombre similaire à celui de ton design */
+    padding: 20px; /* Espacement interne */
+    border-radius: 12px; /* Coins arrondis */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    margin: 20px auto; /* Espacement externe */
+    max-width: 800px; /* Limiter la largeur */
+    color: #f0e1ff; /* Texte clair pour le contraste */
+    font-family: "Comic Sans MS", "Comic Sans", cursive; /* Police Comic Sans */
+    text-align: center; /* Centrer le texte */
+    line-height: 1.5; /* Hauteur de ligne pour rendre le texte plus lisible */
 }
+.description p {
+    color: #815d93; /* Mettre en valeur des mots spécifiques en violet */
+    font-weight: bold; /* Texte en gras */
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
+}
+
 .description ul {
-    list-style: decimal;
+    list-style: none; /* Supprime les puces par défaut */
+    padding: 0;
     text-align: left;
+    margin-top: 1rem;
+    display: grid;
+    justify-content: center;
 }
+
+.description ul li {
+    position: relative;
+    padding-left: 30px; /* Légèrement augmenté pour mieux espacer l'icône */
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #c7b8f2; /* Mettre en valeur des mots spécifiques en violet */
+    font-weight: bold; /* Texte en gras */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.description ul li svg {
+    position: absolute;
+    left: 0;
+    top: 6px; /* Ajustement vertical pour aligner l'icône avec le texte */
+    font-size: 0.9rem;
+    color: #a17cf3; /* Couleur adoucie pour les icônes */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.description ul li:hover {
+    color: #a17cf3; /* Changement de couleur au survol */
+    transform: translateX(5px);
+}
+
+.description ul li:hover svg {
+    transform: scale(1.2);
+    color: #d1bdf5; /* Icône change aussi au survol pour correspondre au texte */
+}
+
 .content {
-    margin-top: 35px;
+    margin-top: 40px;
     padding: 20px;
 }
 
@@ -91,77 +150,88 @@ section {
     margin: 0 auto;
     padding: 30px;
     background-color: #272038;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1); /* Ombres plus légères */
+    border-radius: 15px; /* Bords légèrement plus arrondis */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.1); /* Ombres plus douces */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .appContainer h2 {
     margin: 0;
     grid-column: 1 / span 2;
     grid-row: 1;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Légère ombre portée pour plus de contraste */
+    font-size: 1.6rem; /* Légèrement augmenté pour donner plus de présence */
+    color: #815d93; /* Couleur plus claire pour les titres */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Légère ombre pour plus de contraste */
 }
 
 .datePickerContainer {
     grid-column: 1;
     grid-row: 2;
-    background: linear-gradient(145deg, #2e1a43, #3b2c4b); /* Dégradé subtil */
+    background: linear-gradient(145deg, #2e1a43, #3b2c4b);
     padding: 20px;
-    border-radius: 12px; /* Bords arrondis pour adoucir */
+    border-radius: 15px;
     display: grid;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Ombre plus légère */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.codeContainer {
-    background: #282c34;
 
-    grid-column: 1 / span 2;
-    border-radius: 12px; /* Bords arrondis pour adoucir */
-    display: none;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Ombre plus légère */
-}
-.codeContainerHeader {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    background: #38414e;
-    border-radius: 12px 12px 0px 0px;
-}
-.codeContainerChild {
-    margin-inline: 5px;
-}
-.codeContainerHeader button {
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.codeContainerHeader button span {
-    margin-right: 5px;
-}
-.open {
-    display: grid;
-}
 .datePickerContainer:hover {
-    transform: translateY(-2px); /* Légère levée au survol */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Ombre subtile lors du survol */
+    transform: translateY(-4px); /* Légère levée au survol */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Ombre accentuée au survol */
 }
 
 .textContainer {
     grid-column: 2;
     grid-row: 2;
-    font-size: 14px;
-    font-weight: 300; /* Police plus fine pour un effet moderne */
+    font-size: 15px;
+    font-weight: 400; /* Police légèrement plus épaisse pour une meilleure lisibilité */
     text-align: left;
+    color: #d1c4f0; /* Couleur plus claire pour le texte des boîtes */
 }
+
 .showCodeBtn {
     grid-column: 2;
     grid-row: 3;
     margin: 0;
     text-align: right;
     text-decoration: underline;
-    color: #958fee;
+    font-weight: 600;
+    color: #5a6ae1; /* Couleur du lien plus douce pour une meilleure lisibilité */
     cursor: pointer;
+}
+
+.showCodeBtn:hover {
+    color: #d1bdf5; /* Couleur adoucie au survol */
+}
+
+.codeContainer {
+    background: #282c34;
+    grid-column: 1 / span 2;
+    border-radius: 15px;
+    padding: 10px;
+    display: none;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.codeContainer.open {
+    display: grid;
+}
+
+.codeContainerHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #38414e;
+    border-radius: 12px 12px 0 0;
+    color: #f0e1ff; /* Couleur claire pour les boutons */
+}
+
+.codeContainerHeader button {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #f0e1ff;
 }
