@@ -50,6 +50,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     const monthDropdownRef = useRef<HTMLDivElement>(null)
     const yearDropdownRef = useRef<HTMLDivElement>(null)
 
+    // Utilisation d'un useEffect pour réagir aux changements de selectedDate
+    useEffect(() => {
+        if (selectedDate instanceof Date && !isNaN(selectedDate.getTime())) {
+            setCurrentDate(selectedDate)
+            setCurrentMonth(selectedDate.getMonth())
+            setCurrentYear(selectedDate.getFullYear())
+            setInputDate(formatDate(selectedDate, dateFormat))
+        }
+    }, [selectedDate, dateFormat])
     // useEffect permettant de gérer les clics en dehors du calendrier pour le fermer
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -183,7 +192,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     }
 
     // Gestion de la navigation au mois précédent
-    const handlePreviousMonth = () => {
+    const handlePreviousMonth = (event: React.MouseEvent) => {
+        event.preventDefault() // Empêche la soumission du formulaire
         let newMonth = currentMonth - 1
         let newYear = currentYear
 
@@ -200,7 +210,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     }
 
     // Gestion de la navigation au mois suivant
-    const handleNextMonth = () => {
+    const handleNextMonth = (event: React.MouseEvent) => {
+        event.preventDefault() // Empêche la soumission du formulaire
         let newMonth = currentMonth + 1
         let newYear = currentYear
 
@@ -221,7 +232,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     }
 
     // Fonction pour passer à l'année précédente
-    const handlePreviousYear = () => {
+    const handlePreviousYear = (event: React.MouseEvent) => {
+        event.preventDefault() // Empêche la soumission du formulaire
         let newYear = currentYear - 1
         const updatedDate = new Date(newYear, currentMonth, currentDate.getDate())
         setCurrentYear(currentYear - 1)
@@ -230,7 +242,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
     }
 
     // Fonction pour passer à l'année suivante
-    const handleNextYear = () => {
+    const handleNextYear = (event: React.MouseEvent) => {
+        event.preventDefault() // Empêche la soumission du formulaire
         if (disableFuture && currentYear >= today.getFullYear()) {
             return // Empêche de passer à une année future
         }
@@ -359,7 +372,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                     <div className="date-picker-controls">
                         {/* Navigation des mois */}
                         <div className="date-picker-navigation">
-                            <button onClick={handlePreviousMonth}>
+                            <button type="button" onClick={handlePreviousMonth}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
                             <div className="dropdown-datepicker ">
@@ -381,14 +394,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                                     </ul>
                                 )}
                             </div>
-                            <button onClick={handleNextMonth} disabled={isNextMonthDisabled} className={isNextMonthDisabled ? "disabled" : ""}>
+                            <button type="button" onClick={handleNextMonth} disabled={isNextMonthDisabled} className={isNextMonthDisabled ? "disabled" : ""}>
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </button>
                         </div>
 
                         {/* Navigation des années */}
                         <div className="date-picker-navigation">
-                            <button onClick={handlePreviousYear}>
+                            <button type="button" onClick={handlePreviousYear}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
                             <div className="dropdown-datepicker">
@@ -406,7 +419,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
                                     </ul>
                                 )}
                             </div>
-                            <button onClick={handleNextYear} disabled={isNextYearDisabled} className={isNextYearDisabled ? "disabled" : ""}>
+                            <button type="button" onClick={handleNextYear} disabled={isNextYearDisabled} className={isNextYearDisabled ? "disabled" : ""}>
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </button>
                         </div>
