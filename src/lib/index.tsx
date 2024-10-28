@@ -6,13 +6,14 @@ import "./style.css"
 // Interface définissant les propriétés (props) attendues par le composant DatePicker
 export interface DatePickerProps {
     selectedDate?: Date // Date sélectionnée par défaut
-    onDateChange?: (date: Date) => void // Callback pour déclencher un changement de date
+    onDateChange?: (date: Date) => void // Callback pour déclencher un changement de date et permet de detecter quand la date change
     filterDate?: (date: Date) => boolean // Fonction permettant de filtrer les dates non sélectionnables
     disableFuture?: boolean // Indique si les dates futures doivent être désactivées
     dateFormat?: string // Format de date personnalisé (par défaut 'dd/mm/yyyy')
 }
 
 // Fonction utilitaire pour formater une date selon le format spécifié dans les props
+// va determiner le format de la date dans les props
 const formatDate = (date: Date, format: string = "dd/mm/yyyy"): string => {
     const day = String(date.getDate()).padStart(2, "0") // Formate le jour avec un zéro initial
     const month = String(date.getMonth() + 1).padStart(2, "0") // Formate le mois avec un zéro initial
@@ -256,7 +257,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChan
 
     // Gestion de la saisie de la date dans le champ texte avec ajout/suppression automatique des slashes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/[^0-9]/g, "") // Supprime les caractères non numériques
+        let value = e.target.value.replace(/[^0-9]/g, "") // Regex qui Supprime les caractères non numériques
         const format = dateFormat.toLowerCase()
 
         // Sauvegarde de la position du curseur pour maintenir le comportement naturel lors de la suppression

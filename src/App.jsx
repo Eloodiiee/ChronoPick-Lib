@@ -171,7 +171,7 @@ function App() {
                         {isSecondOpen && (
                             <div className={`codeContainer ${isSecondOpen ? "open" : ""}`}>
                                 <div className="codeContainerHeader">
-                                    <span className="codeContainerChild">ChronoPick - excluding weekends</span>
+                                    <span className="codeContainerChild">ChronoPick - Disable Future Dates</span>
                                     {secondCopy ? (
                                         <button className="codeContainerChild">
                                             <span>
