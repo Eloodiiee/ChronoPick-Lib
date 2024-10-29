@@ -164,7 +164,7 @@ function App() {
 
                         {/* Instance du DatePicker désactivant les dates futures */}
                         <div className="datePickerContainer">
-                            <DatePicker selectedDate={new Date()} disableFuture={true} onDateChange={handleDateChange} />
+                            <DatePicker selectedDate={date} disableFuture={true} onDateChange={(newDate) => handleDateChange(newDate, "dd/mm/yyyy")} />
                         </div>
 
                         {/* Affichage du code si isSecondOpen est vrai */}
