@@ -56,7 +56,7 @@ function App() {
     const noWeekEndDatePicker = `<DatePicker filterDate={(date) => date.getDay() !== 0 && date.getDay() !== 6} onDateChange={(newDate) => handleDateChange(newDate, "yyyy/mm/dd")} dateFormat="yyyy/mm/dd" />`
 
     // JSX code pour afficher un exemple du DatePicker qui désactive les dates futures
-    const noFutureDatesDatePicker = "<DatePicker selectedDate={new Date()} disableFuture={true} onDateChange={handleDateChange} />"
+    const noFutureDatesDatePicker = `<DatePicker selectedDate={date} disableFuture={true} onDateChange={(newDate) => handleDateChange(newDate, "dd/mm/yyyy")} />`
 
     // Hook useEffect pour afficher la date par défaut au chargement de l'application
     useEffect(() => {
